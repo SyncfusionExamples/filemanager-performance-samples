@@ -150,9 +150,7 @@ import {
       </div>
 
       <ejs-filemanager
-        id="file-manager"
         [ajaxSettings]="ajaxSettings"
-        height="600px"
         (created)="created()"
         (beforeSend)="onBeforeSend($event)"
         (fileLoad)="onFileLoad($event)"
