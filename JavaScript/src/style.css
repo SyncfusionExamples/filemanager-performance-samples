@@ -1,0 +1,78 @@
+@import "../node_modules/@syncfusion/ej2-tailwind3-theme/styles/file-manager/index.css";
+.metrics-wrapper {
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.metrics-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-bottom: 12px;
+}
+
+.metrics-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.metric-card {
+    flex: 1;
+    min-width: 180px;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.metric-label {
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.metric-value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.metric-blue {
+    background: #dbeafe;
+    border: 1px solid #93c5fd;
+}
+
+.metric-blue .metric-label {
+    color: #1e40af;
+}
+
+.metric-blue .metric-value {
+    color: #1e3a8a;
+}
+
+.metric-green {
+    background: #dcfce7;
+    border: 1px solid #86efac;
+}
+
+.metric-green .metric-label {
+    color: #15803d;
+}
+
+.metric-green .metric-value {
+    color: #166534;
+}
+
+.metric-yellow {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+}
+
+.metric-yellow .metric-label {
+    color: #b45309;
+}
+
+.metric-yellow .metric-value {
+    color: #92400e;
+}

@@ -1,0 +1,112 @@
+﻿@page "/"
+@using Syncfusion.Blazor.FileManager
+
+<div style="margin-bottom:16px;
+            padding:16px;
+            border-radius:8px;
+            background:#ffffff;
+            border:1px solid #d1d5db;
+            box-shadow:0 2px 4px rgba(0,0,0,0.08);">
+
+    <div style="font-size:18px;
+                font-weight:600;
+                color:#1e3a8a;
+                margin-bottom:12px;">
+
+        @(string.IsNullOrEmpty(Operation)
+                ? "Perform an operation to measure performance"
+                : $"{Operation} Performance Metrics")
+    </div>
+
+    @if (!string.IsNullOrEmpty(Operation))
+    {
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+
+            <div style="flex:1;
+                            min-width:180px;
+                            padding:12px;
+                            background:#dbeafe;
+                            border:1px solid #93c5fd;
+                            border-radius:6px;">
+
+                <div style="font-size:13px;
+                                color:#1e40af;
+                                margin-bottom:6px;">
+                    Total Load Time
+                </div>
+
+                <div style="font-size:22px;
+                                font-weight:bold;
+                                color:#1e3a8a;">
+                    @TotalLoadTime.ToString("F2") ms
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+<SfFileManager AllowDragAndDrop="true" TValue="FileManagerDirectoryContent">
+
+    <FileManagerAjaxSettings Url="https://physical-service.syncfusion.com/api/FileManager/FileOperations"
+                             UploadUrl="https://physical-service.syncfusion.com/api/FileManager/Upload"
+                             DownloadUrl="https://physical-service.syncfusion.com/api/FileManager/Download"
+                             GetImageUrl="https://physical-service.syncfusion.com/api/FileManager/GetImage">
+    </FileManagerAjaxSettings>
+
+    <FileManagerEvents TValue="FileManagerDirectoryContent"
+                       OnSend="Send"
+                       OnSuccess="Success"
+                       Created="Created">
+    </FileManagerEvents>
+
+</SfFileManager>
+
+@code {
+
+    // Initialization timing (not displayed)
+    private double initializationTime;
+    private DateTime initializationStartTime;
+
+    // Operation timing
+    private DateTime? operationStartTime;
+
+    // UI Metrics
+    private string Operation = string.Empty;
+    private double TotalLoadTime;
+
+    protected override void OnInitialized()
+    {
+        initializationStartTime = DateTime.UtcNow;
+    }
+
+    public void Created()
+    {
+        initializationTime =
+            (DateTime.UtcNow - initializationStartTime).TotalMilliseconds;
+    }
+
+    public void Send(BeforeSendEventArgs args)
+    {
+        if (args.Action == "read" || args.Action == "search")
+        {
+            operationStartTime = DateTime.UtcNow;
+        }
+    }
+
+    public void Success(SuccessEventArgs<FileManagerDirectoryContent> args)
+    {
+        if ((args.Action == "read" || args.Action == "search") &&
+            operationStartTime.HasValue)
+        {
+            TotalLoadTime =
+                (DateTime.UtcNow - operationStartTime.Value).TotalMilliseconds;
+
+            Operation = args.Action.ToUpperInvariant();
+
+            operationStartTime = null;
+
+            // StateHasChanged();
+        }
+    }
+}
